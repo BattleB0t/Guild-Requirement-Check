@@ -68,7 +68,7 @@ client.on('message', async message => {
     return message.channel.send(result);
   }
   else if (cmd === 'h' || cmd === 'help'){
-    message.channel.send(helpEmbed);
+    message.reply(helpEmbed.setColor(message.guild.me.displayHexColor))
   }
 });
 
@@ -100,7 +100,7 @@ async function rankTest(ign){
 
     var embed = new Discord.MessageEmbed()
     .setTitle(`User: ${ign}`)
-    .setColor('F42069')
+    .setColor('32CD32')
     .addFields(
         {
             name: `Normal Requirements`,
