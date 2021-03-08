@@ -1,0 +1,15 @@
+{
+    "prefix": "",
+    "token": "",
+    "apiKey": "",
+    "requirements":{
+        "slayer": 0,
+        "skills": 0,
+        "catacombs": 0,
+        "bypasses":{
+            "slayer": 0,
+            "skills": 0,
+            "catacombs": 0
+        }
+    }
+}
