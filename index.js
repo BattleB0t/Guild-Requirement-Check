@@ -130,7 +130,7 @@ async function rankTest(ign){
 
 async function getApiData(ign) {
   const uuidWithDash = await getUUID(ign);
-  const url = `https://hypixel-api.senither.com/v1/profiles/${uuidWithDash}/weight?key=${config.apiKey}`;
+  const url = `https://hypixel-api.senither.com/v1/profiles/${uuidWithDash}/save?key=${config.apiKey}`;
   const response = await fetch(url);
   const result = await response.json();
   return result;
