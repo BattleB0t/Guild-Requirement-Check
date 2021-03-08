@@ -52,8 +52,8 @@ client.on('message', async message => {
     message.react('✔️');
     try{
         var result = await rankTest(args[0]);
-    } catch(e) {
-        var result = `Error caught: \`${e}\``
+    } catch{
+        var result = `Error caught - This usually means you don't meet reqs and have a null value in the api. If you're sure you meet reqs send your Skycrypt here and we'll manually review`
     }
     return message.channel.send(result);
   }
@@ -71,39 +71,12 @@ async function rankTest(ign){
         return `User \`${ign}\` doesn't have skills api enabled.`
     }
 
-    try{
-        var meetsSlayer = (apidata.data.slayers.total_experience >= config.requirements.slayer)
-    } catch{
-        var meetsSlayer = false;
-    }
-    try{
-        var meetsSkill = (apidata.data.skills.average_skills >= config.requirements.skills)
-    } catch{
-        var meetsSkill = false;
-    }
-    try{
-        var meetsCata = (apidata.data.dungeons.types.catacombs.level >= config.requirements.catacombs)
-    } catch{
-        var meetsCata = false;
-    }
-    console.log(chalk.yellow(`User ${ign}:\nSlayer: ${meetsSlayer}\nSkills: ${meetsSkill}\nCatacombs: ${meetsCata}`)) //normal req stuff
-
-    try{
-        var meetsSlayerBypass = (apidata.data.slayers.total_experience >= config.requirements.bypasses.slayer)
-    } catch{
-        var meetsSlayerBypass = false;
-    }
-    try{
-        var meetsSkillBypass = (apidata.data.skills.average_skills >= config.requirements.bypasses.skills)
-    } catch{
-        var meetsSkillBypass = false;
-    }
-    try{
-        var meetsCataBypass = (apidata.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs)
-    } catch{
-        var meetsCataBypass = false;
-    }
-    console.log(chalk.blueBright(`Slayer Bypass: ${meetsSlayerBypass}\nSkills Bypass: ${meetsSkillBypass}\nCatacombs Bypass: ${meetsCataBypass}`)) //bypass stuff
+    var meetsSlayer = (apidata.data.slayers.total_experience >= config.requirements.slayer)
+    var meetsSkill = (apidata.data.skills.average_skills >= config.requirements.skills)
+    var meetsCata = (apidata.data.dungeons.types.catacombs.level >= config.requirements.catacombs)
+    var meetsSlayerBypass = (apidata.data.slayers.total_experience >= config.requirements.bypasses.slayer)
+    var meetsSkillBypass = (apidata.data.skills.average_skills >= config.requirements.bypasses.skills)
+    var meetsCataBypass = (apidata.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs)
 
     var embed = new Discord.MessageEmbed()
     .setTitle(`User: ${ign}`)
