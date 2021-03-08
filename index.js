@@ -25,16 +25,26 @@ const helpEmbed = new Discord.MessageEmbed()
         ].join('\n'),
         inline: true
     },
-    /*{
+    {
         name: "Bypasses",
         value: [
             `Slayer: ${config.requirements.bypasses.slayer}`,
-            `Skills: ${config.requirements.bypasses.skills}`
+            `Skills: ${config.requirements.bypasses.skills}`,
             `Catacombs: ${config.requirements.bypasses.catacombs}`
         ].join('\n'),
         inline: true
-    }*/
+    }
 )
+.setFooter('Made by neyoa ❤')
+.setTimestamp();
+
+const errorEmbed = new Discord.MessageEmbed()
+.setTitle('Error!')
+.setDescription([`Something went wrong - this usually means you don't meet requirements and have a null value in the API.`,
+`We'll check if you meet requirements manually for you now.`].join('\n'))
+.setColor('FF0000')
+.setFooter('Made by neyoa ❤')
+.setTimestamp();
 
 client.once('ready', () => {
   console.log(chalk.greenBright(`Logged in as ${client.user.username}!`));
@@ -53,12 +63,12 @@ client.on('message', async message => {
     try{
         var result = await rankTest(args[0]);
     } catch{
-        var result = `Error caught - This usually means you don't meet reqs and have a null value in the api. If you're sure you meet reqs send your Skycrypt here and we'll manually review`
+        var result = errorEmbed;
     }
     return message.channel.send(result);
   }
   else if (cmd === 'h' || cmd === 'help'){
-
+    message.channel.send(helpEmbed);
   }
 });
 
@@ -68,7 +78,17 @@ async function rankTest(ign){
     const apidata = await getApiData(ign);
 
     if(apidata.data.skills.apiEnabled === false){
-        return `User \`${ign}\` doesn't have skills api enabled.`
+        return {
+            embed: {
+              title: `API Error`,
+              description: `\`${ign}\` doesn't have skills api enabled. Please enable it then try again`,
+              color: 'ffa500',
+              timestamp: new Date(),
+              footer: {
+                text: 'Made by neyoa ❤',
+              },
+            },
+          }
     }
 
     var meetsSlayer = (apidata.data.slayers.total_experience >= config.requirements.slayer)
