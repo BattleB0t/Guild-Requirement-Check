@@ -18,7 +18,11 @@ client.on('message', async message => {
 
   if (cmd === 'c' || cmd === 'check') {
     if (!args[0]) return message.channel.send('Please provide a user to check .');
-    let result = await rankTest(args[0]);
+    try{
+        var result = await rankTest(args[0]);
+    } catch(e) {
+        var result = `Error caught: \`${e}\``
+    }
     return message.channel.send(result);
   }
 });
@@ -84,6 +88,7 @@ async function rankTest(ign){
             inline: true,
         }
     )
+    .setFooter(`${config.prefix}check <ign>`)
     .setTimestamp();
     return embed;
 }
