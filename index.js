@@ -11,8 +11,8 @@ const helpEmbed = new Discord.MessageEmbed()
     {
         name: "Check Player",
         value: [
-            `${config.prefix}check <ign>`,
-            `${config.prefix}c <ign>`,
+            `\`${config.prefix}check <ign>\``,
+            `\`${config.prefix}c <ign>\``,
             `Checks if the specified player meets the current guild requirements`
         ].join('\n')
     },
