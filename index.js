@@ -22,18 +22,18 @@ const helpEmbed = new Discord.MessageEmbed()
             `Slayer: ${config.requirements.slayer}`,
             `Skills: ${config.requirements.skills}`,
             `Catacombs: ${config.requirements.catacombs}`
-        ],
+        ].join('\n'),
         inline: true
     },
-    {
+    /*{
         name: "Bypasses",
         value: [
             `Slayer: ${config.requirements.bypasses.slayer}`,
             `Skills: ${config.requirements.bypasses.skills}`
             `Catacombs: ${config.requirements.bypasses.catacombs}`
-        ],
+        ].join('\n'),
         inline: true
-    }
+    }*/
 )
 
 client.once('ready', () => {
@@ -66,6 +66,11 @@ client.login(config.token);
 
 async function rankTest(ign){
     const apidata = await getApiData(ign);
+
+    if(apidata.data.skills.apiEnabled === false){
+        return `User \`${ign}\` doesn't have skills api enabled.`
+    }
+
     try{
         var meetsSlayer = (apidata.data.slayers.total_experience >= config.requirements.slayer)
     } catch{
