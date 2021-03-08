@@ -5,6 +5,37 @@ const config = require('./config.json');
 
 const client = new Discord.Client();
 
+const helpEmbed = new Discord.MessageEmbed()
+.setTitle('Help')
+.addFields(
+    {
+        name: "Check Player",
+        value: [
+            `${config.prefix}check <ign>`,
+            `${config.prefix}c <ign>`,
+            `Checks if the specified player meets the current guild requirements`
+        ].join('\n')
+    },
+    {
+        name: "Current requirements",
+        value: [
+            `Slayer: ${config.requirements.slayer}`,
+            `Skills: ${config.requirements.skills}`,
+            `Catacombs: ${config.requirements.catacombs}`
+        ],
+        inline: true
+    },
+    {
+        name: "Bypasses",
+        value: [
+            `Slayer: ${config.requirements.bypasses.slayer}`,
+            `Skills: ${config.requirements.bypasses.skills}`
+            `Catacombs: ${config.requirements.bypasses.catacombs}`
+        ],
+        inline: true
+    }
+)
+
 client.once('ready', () => {
   console.log(chalk.greenBright(`Logged in as ${client.user.username}!`));
   client.user.setActivity('new guild members.', { type: 'WATCHING' });
@@ -25,6 +56,9 @@ client.on('message', async message => {
         var result = `Error caught: \`${e}\``
     }
     return message.channel.send(result);
+  }
+  else if (cmd === 'h' || cmd === 'help'){
+
   }
 });
 
