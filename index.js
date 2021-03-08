@@ -18,6 +18,7 @@ client.on('message', async message => {
 
   if (cmd === 'c' || cmd === 'check') {
     if (!args[0]) return message.channel.send('Please provide a user to check .');
+    message.react('✔️');
     try{
         var result = await rankTest(args[0]);
     } catch(e) {
