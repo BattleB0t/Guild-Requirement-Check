@@ -5,6 +5,45 @@ const config = require('./config.json');
 
 const client = new Discord.Client();
 
+const acceptedEmbed = new Discord.MessageEmbed()
+    .setTitle(`Accepted!`)
+    .setColor(`32CD32`)
+    .setDescription([
+        `You meet the requirements to join the guild!`,
+        `Before we invite you please make sure you:`,
+        `- Aren't currently in a guild`,
+        `- Have guild invites privacy settings on low`,
+        `- Are able to accept the invite`
+    ].join('\n'))
+    .setFooter(`Made by neyoa ❤`)
+    .setTimestamp();
+
+const deniedEmbed = new Discord.MessageEmbed()
+    .setTitle(`Denied.`)
+    .setColor(`DC143C`)
+    .addFields(
+        {
+            name: "Requirements",
+            value: [
+                `Slayer: ${config.requirements.slayer}`,
+                `Skills: ${config.requirements.skills}`,
+                `Catacombs: ${config.requirements.catacombs}`
+            ].join('\n'),
+            inline: true
+        },
+        {
+            name: "Bypasses",
+            value: [
+                `Slayer: ${config.requirements.bypasses.slayer}`,
+                `Skills: ${config.requirements.bypasses.skills}`,
+                `Catacombs: ${config.requirements.bypasses.catacombs}`
+            ].join('\n'),
+            inline: true
+        }
+    )
+.setFooter(`If you think this is wrong we'll check manually for you`)
+.setTimestamp();
+
 const helpEmbed = new Discord.MessageEmbed()
 .setTitle('Help')
 .addFields(
@@ -35,7 +74,7 @@ const helpEmbed = new Discord.MessageEmbed()
         inline: true
     }
 )
-.setFooter('Made by neyoa ❤')
+.setFooter('!')
 .setTimestamp();
 
 const errorEmbed = new Discord.MessageEmbed()
@@ -106,46 +145,11 @@ async function rankTest(ign){
     if(meetsSkillBypass) reqsMet++;
     if(meetsCataBypass) reqsMet++;
 
-    var embed = new Discord.MessageEmbed()
-    .setTitle(`User: ${ign}`)
-    .addFields(
-        {
-            name: `Normal Requirements`,
-            value: [
-                `Slayer: ${meetsSlayer}`,
-                `Skills: ${meetsSkill}`,
-                `Catacombs: ${meetsCata}`
-            ].join('\n'),
-            inline: true,
-        },
-        {
-            name: `Bypasses`,
-            value: [
-                `Slayer: ${meetsSlayerBypass}`,
-                `Skills: ${meetsSkillBypass}`,
-                `Catacombs: ${meetsCataBypass}`
-            ].join('\n'),
-            inline: true,
-        }
-    )
-    .setFooter(`${config.prefix}check <ign>`)
-    .setTimestamp();
-
     if(reqsMet >= 3){
-        embed.setDescription([
-            `You meet the requirements to join the guild!`,
-            `Please make sure you aren't currently in a guild and set guild invites privacy settings to low`,
-            `Welcome!`
-        ].join('\n'))
-        embed.setColor('32CD32')
+        return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`);
     } else{
-        embed.setDescription([
-            `Sorry, you only meet ${reqsMet} out of 3 needed requirements`,
-            `You can view the current requirements and bypasses by running \`${config.prefix}help\``
-        ].join('\n'))
-        embed.setColor('DC143C')
+        return deniedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`).setDescription(`Sorry but you meet ${reqsMet}/3 requirements or bypasses.\nCurrent requirements:`);
     }
-    return embed;
 }
 
 async function getApiData(ign) {
