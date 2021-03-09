@@ -85,9 +85,8 @@ const errorEmbed = new Discord.MessageEmbed()
 .setFooter('Made by neyoa ❤')
 .setTimestamp();
 
-const apiOffEmbed = new Discord.MessageEmbed
+const apiOffEmbed = new Discord.MessageEmbed()
 .setTitle(`API Error`)
-.setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`)
 .setColor('FFA500')
 .setTimestamp()
 .setFooter('Made by neyoa ❤');
@@ -124,7 +123,8 @@ async function rankTest(ign){
     const apidata = await getApiData(ign);
 
     if(apidata.data.skills.apiEnabled === false){
-        return apiOffEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`);
+        return apiOffEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
+        .setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`);
     }
 
     var reqsMet = 0;
