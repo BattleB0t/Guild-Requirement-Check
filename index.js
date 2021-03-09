@@ -25,7 +25,7 @@ const deniedEmbed = new Discord.MessageEmbed()
         {
             name: "Requirements",
             value: [
-                `Slayer: ${config.requirements.slayer}`,
+                `Slayer: ${config.requirements.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
                 `Skills: ${config.requirements.skills}`,
                 `Catacombs: ${config.requirements.catacombs}`
             ].join('\n'),
@@ -34,7 +34,7 @@ const deniedEmbed = new Discord.MessageEmbed()
         {
             name: "Bypasses",
             value: [
-                `Slayer: ${config.requirements.bypasses.slayer}`,
+                `Slayer: ${config.requirements.bypasses.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
                 `Skills: ${config.requirements.bypasses.skills}`,
                 `Catacombs: ${config.requirements.bypasses.catacombs}`
             ].join('\n'),
@@ -58,7 +58,7 @@ const helpEmbed = new Discord.MessageEmbed()
     {
         name: "Current requirements",
         value: [
-            `Slayer: ${config.requirements.slayer}`,
+            `Slayer: ${config.requirements.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
             `Skills: ${config.requirements.skills}`,
             `Catacombs: ${config.requirements.catacombs}`
         ].join('\n'),
@@ -67,7 +67,7 @@ const helpEmbed = new Discord.MessageEmbed()
     {
         name: "Bypasses",
         value: [
-            `Slayer: ${config.requirements.bypasses.slayer}`,
+            `Slayer: ${config.requirements.bypasses.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
             `Skills: ${config.requirements.bypasses.skills}`,
             `Catacombs: ${config.requirements.bypasses.catacombs}`
         ].join('\n'),
