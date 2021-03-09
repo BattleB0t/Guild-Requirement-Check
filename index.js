@@ -74,7 +74,7 @@ const helpEmbed = new Discord.MessageEmbed()
         inline: true
     }
 )
-.setFooter('!')
+.setFooter('Made by neyoa ❤')
 .setTimestamp();
 
 const errorEmbed = new Discord.MessageEmbed()
