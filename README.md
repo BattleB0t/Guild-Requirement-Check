@@ -49,8 +49,6 @@ node index.js
         - `Catacombs` - Minimum catacombs level needed to bypass another requirement
 
 ### Roadmap
-- Give a yes/no result when running the command instead of needing staff to check
-    - Currently if just returns which of the 6 requirements and bypasses are and aren't met, the bot telling the user if they are or aren't in the guild would be much better
 - If yes invite user to guild via the [hypixel-discord-chat-bridge](https://github.com/Senither/hypixel-discord-chat-bridge)
     - Prevents staff needing to manually invite
 - Add commands to change the requirements
