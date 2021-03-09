@@ -85,6 +85,13 @@ const errorEmbed = new Discord.MessageEmbed()
 .setFooter('Made by neyoa ❤')
 .setTimestamp();
 
+const apiOffEmbed = new Discord.MessageEmbed
+.setTitle(`API Error`)
+.setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`)
+.setColor('FFA500')
+.setTimestamp()
+.setFooter('Made by neyoa ❤');
+
 client.once('ready', () => {
   console.log(chalk.greenBright(`Logged in as ${client.user.username}!`));
   client.user.setActivity('new guild members.', { type: 'WATCHING' });
@@ -117,29 +124,16 @@ async function rankTest(ign){
     const apidata = await getApiData(ign);
 
     if(apidata.data.skills.apiEnabled === false){
-        return new Discord.MessageEmbed
-        .setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
-        .setTitle(`API Error`)
-        .setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`)
-        .setColor('FFA500')
-        .setTimestamp()
-        .setFooter('Made by neyoa ❤')
+        return apiOffEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`);
     }
 
-    var meetsSlayer = (apidata.data.slayers.total_experience >= config.requirements.slayer)
-    var meetsSkill = (apidata.data.skills.average_skills >= config.requirements.skills)
-    var meetsCata = (apidata.data.dungeons.types.catacombs.level >= config.requirements.catacombs)
-    var meetsSlayerBypass = (apidata.data.slayers.total_experience >= config.requirements.bypasses.slayer)
-    var meetsSkillBypass = (apidata.data.skills.average_skills >= config.requirements.bypasses.skills)
-    var meetsCataBypass = (apidata.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs)
-
     var reqsMet = 0;
-    if(meetsSlayer) reqsMet++;
-    if(meetsSkill) reqsMet++;
-    if(meetsCata) reqsMet++;
-    if(meetsSlayerBypass) reqsMet++;
-    if(meetsSkillBypass) reqsMet++;
-    if(meetsCataBypass) reqsMet++;
+    if(apidata.data.slayers.total_experience >= config.requirements.slayer) reqsMet++;
+    if(apidata.data.skills.average_skills >= config.requirements.skills) reqsMet++;
+    if(apidata.data.dungeons.types.catacombs.level >= config.requirements.catacombs) reqsMet++;
+    if(apidata.data.slayers.total_experience >= config.requirements.bypasses.slayer) reqsMet++;
+    if(apidata.data.skills.average_skills >= config.requirements.bypasses.skills) reqsMet++;
+    if(apidata.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs) reqsMet++;
 
     if(reqsMet >= 3){
         return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`);
