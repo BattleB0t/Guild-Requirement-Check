@@ -117,17 +117,13 @@ async function rankTest(ign){
     const apidata = await getApiData(ign);
 
     if(apidata.data.skills.apiEnabled === false){
-        return {
-            embed: {
-              title: `API Error`,
-              description: `\`${ign}\` doesn't have skills api enabled. Please enable it then try again`,
-              color: 'ffa500',
-              timestamp: new Date(),
-              footer: {
-                text: 'Made by neyoa ❤',
-              },
-            },
-          }
+        return new Discord.MessageEmbed
+        .setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
+        .setTitle(`API Error`)
+        .setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`)
+        .setColor('FFA500')
+        .setTimestamp()
+        .setFooter('Made by neyoa ❤')
     }
 
     var meetsSlayer = (apidata.data.slayers.total_experience >= config.requirements.slayer)
