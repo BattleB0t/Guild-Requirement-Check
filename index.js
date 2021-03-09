@@ -98,9 +98,16 @@ async function rankTest(ign){
     var meetsSkillBypass = (apidata.data.skills.average_skills >= config.requirements.bypasses.skills)
     var meetsCataBypass = (apidata.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs)
 
+    var reqsMet = 0;
+    if(meetsSlayer) reqsMet++;
+    if(meetsSkill) reqsMet++;
+    if(meetsCata) reqsMet++;
+    if(meetsSlayerBypass) reqsMet++;
+    if(meetsSkillBypass) reqsMet++;
+    if(meetsCataBypass) reqsMet++;
+
     var embed = new Discord.MessageEmbed()
     .setTitle(`User: ${ign}`)
-    .setColor('32CD32')
     .addFields(
         {
             name: `Normal Requirements`,
@@ -123,6 +130,21 @@ async function rankTest(ign){
     )
     .setFooter(`${config.prefix}check <ign>`)
     .setTimestamp();
+
+    if(reqsMet >= 3){
+        embed.setDescription([
+            `You meet the requirements to join the guild!`,
+            `Please make sure you aren't currently in a guild and set guild invites privacy settings to low`,
+            `Welcome!`
+        ].join('\n'))
+        embed.setColor('32CD32')
+    } else{
+        embed.setDescription([
+            `Sorry, you only meet ${reqsMet} out of 3 needed requirements`,
+            `You can view the current requirements and bypasses by running \`${config.prefix}help\``
+        ].join('\n'))
+        embed.setColor('DC143C')
+    }
     return embed;
 }
 
