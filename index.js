@@ -146,9 +146,10 @@ async function rankTest(ign){
     if(meetsCataBypass) reqsMet++;
 
     if(reqsMet >= 3){
-        return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`);
+        return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`);
     } else{
-        return deniedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`).setDescription(`Sorry but you meet ${reqsMet}/3 requirements or bypasses.\nCurrent requirements:`);
+        return deniedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
+        .setDescription(`Sorry but you meet ${reqsMet}/3 requirements or bypasses.\nCurrent requirements:`);
     }
 }
 
