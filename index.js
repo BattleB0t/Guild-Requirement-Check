@@ -87,8 +87,6 @@ const apiOffEmbed = new Discord.MessageEmbed()
 .setColor('FFA500')
 .setFooter('Made by neyoa ❤');
 
-const emoji = client.emojis.get(`819135685452890113`);
-
 client.once('ready', () => {
   console.log(chalk.greenBright(`Logged in as ${client.user.username}!`));
   client.user.setActivity('new guild members.', { type: 'WATCHING' });
@@ -102,7 +100,6 @@ client.on('message', async message => {
 
   if (cmd === 'c' || cmd === 'check') {
     if (!args[0]) return message.channel.send('Please provide a user to check.');
-    message.react(emoji);
     try{
         var result = await rankTest(args[0]);
     } catch{
