@@ -143,8 +143,8 @@ async function rankTest(ign){
         ``,
         `**Your stats:**`,
         `Slayer: ${apidata.data.slayers.total_experience.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
-        `Skills: ${apidata.data.skills.average_skills}`,
-        `Catacombs: ${apidata.data.dungeons.types.catacombs.level}`
+        `Skills: ${apidata.data.skills.average_skills.toString().substr(0, 4)}`,
+        `Catacombs: ${apidata.data.dungeons.types.catacombs.level.toString().substr(0, 4)}`
         ].join('\n'))
         .setTimestamp();
         return denial;
