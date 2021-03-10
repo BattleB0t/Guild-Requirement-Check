@@ -22,7 +22,7 @@ const deniedEmbed = new Discord.MessageEmbed()
     .setColor(`DC143C`)
     .addFields(
         {
-            name: "Requirements",
+            name: "Current Requirements",
             value: [
                 `Slayer: ${config.requirements.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
                 `Skills: ${config.requirements.skills}`,
@@ -137,14 +137,17 @@ async function rankTest(ign){
         return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
         .setTimestamp();
     } else{
-        return deniedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
-        .setDescription(`Sorry but you meet ${reqsMet}/3 requirements or bypasses.\nCurrent requirements:`)
-        .addField('Your stats:', [
-            `Slayer: ${apidata.data.slayers.total_experience.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
-            `Skills: ${apidata.data.skills.average_skills}`,
-            `Catacombs: ${apidata.data.dungeons.types.catacombs.level}`
-        ].join('\n'), false)
+        let denial = deniedEmbed;
+        denial.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
+        .setDescription([`Sorry but you meet ${reqsMet}/3 requirements or bypasses.`,
+        ``,
+        `**Your stats:**`,
+        `Slayer: ${apidata.data.slayers.total_experience.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
+        `Skills: ${apidata.data.skills.average_skills}`,
+        `Catacombs: ${apidata.data.dungeons.types.catacombs.level}`
+        ].join('\n'))
         .setTimestamp();
+        return denial;
     }
 }
 
