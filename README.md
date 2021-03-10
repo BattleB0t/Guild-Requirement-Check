@@ -53,3 +53,7 @@ node index.js
     - Prevents staff needing to manually invite
 - Add commands to change the requirements
     - Something like `-setreq catacombs 30` and `-setbypass catacombs 40`
+- Add loading embed while api data is being fetched
+    - No idea how but I'll figure it out ¯\_(ツ)_/¯
+- Rewrite to include a command handler
+    - Am I ever gonna do this? Probably not.
