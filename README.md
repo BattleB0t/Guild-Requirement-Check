@@ -56,6 +56,8 @@ node index.js
         - `Catacombs` - Minimum catacombs level needed to bypass another requirement
 
 ### Roadmap
+- Add staff player heads as reaction emojis, players can click these to ping the staff
+    - Thanks `EnderxGaming#9887` :)
 - If yes invite user to guild via the [hypixel-discord-chat-bridge](https://github.com/Senither/hypixel-discord-chat-bridge)
     - Prevents staff needing to manually invite
 - Add commands to change the requirements
