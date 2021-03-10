@@ -100,12 +100,13 @@ client.on('message', async message => {
 
   if (cmd === 'c' || cmd === 'check') {
     if (!args[0]) return message.channel.send('Please provide a user to check.');
-    message.react("819138970771652609");
+    message.react('819138970771652609');
     try{
         var result = await rankTest(args[0]);
     } catch{
         var result = errorEmbed.setTimestamp();
     }
+    message.reactions.cache.get('819138970771652609').remove().catch(error => console.error('Failed to remove loading reaction: ', error));
     return message.channel.send(result);
   }
   else if (cmd === 'h' || cmd === 'help'){
