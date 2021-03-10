@@ -87,7 +87,7 @@ const apiOffEmbed = new Discord.MessageEmbed()
 .setColor('FFA500')
 .setFooter('Made by neyoa ❤');
 
-const emoji = client.emojis.cache.get(`819135685452890113`);
+const emoji = client.emojis.get(`819135685452890113`);
 
 client.once('ready', () => {
   console.log(chalk.greenBright(`Logged in as ${client.user.username}!`));
