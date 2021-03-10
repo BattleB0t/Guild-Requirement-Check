@@ -1,6 +1,13 @@
 # Guild Requirement Checker
 
-A discord bot to check if someone meets skyblock requirements for a hypixel guild.
+> A discord bot to check if someone meets skyblock requirements for a hypixel guild.
+
+### Table of Content
+
+- [Prerequisites](#prerequisites)
+- [Installation & Setup](#installation--setup)
+- [Configuration](#configuration)
+- [Roadmap](#roadmap)
 
 ### Prerequisites
 - Git
