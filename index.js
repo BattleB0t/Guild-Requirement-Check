@@ -15,8 +15,7 @@ const acceptedEmbed = new Discord.MessageEmbed()
         `- Have guild invites privacy settings on low`,
         `- Are able to accept the invite`
     ].join('\n'))
-    .setFooter(`Made by neyoa ❤`)
-    .setTimestamp();
+    .setFooter(`Made by neyoa ❤`);
 
 const deniedEmbed = new Discord.MessageEmbed()
     .setTitle(`Denied.`)
@@ -74,21 +73,18 @@ const helpEmbed = new Discord.MessageEmbed()
         inline: true
     }
 )
-.setFooter('Made by neyoa ❤')
-.setTimestamp();
+.setFooter('Made by neyoa ❤');
 
 const errorEmbed = new Discord.MessageEmbed()
 .setTitle('Error!')
 .setDescription([`Something went wrong - this usually means you don't meet requirements and have a null value in the API.`,
 `We'll check if you meet requirements manually for you now.`].join('\n'))
 .setColor('FF0000')
-.setFooter('Made by neyoa ❤')
-.setTimestamp();
+.setFooter('Made by neyoa ❤');
 
 const apiOffEmbed = new Discord.MessageEmbed()
 .setTitle(`API Error`)
 .setColor('FFA500')
-.setTimestamp()
 .setFooter('Made by neyoa ❤');
 
 client.once('ready', () => {
@@ -108,7 +104,7 @@ client.on('message', async message => {
     try{
         var result = await rankTest(args[0]);
     } catch{
-        var result = errorEmbed;
+        var result = errorEmbed.setTimestamp();
     }
     return message.channel.send(result);
   }
@@ -124,7 +120,8 @@ async function rankTest(ign){
 
     if(apidata.data.skills.apiEnabled === false){
         return apiOffEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
-        .setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`);
+        .setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`)
+        .setTimestamp();
     }
 
     var reqsMet = 0;
@@ -136,10 +133,12 @@ async function rankTest(ign){
     if(apidata.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs) reqsMet++;
 
     if(reqsMet >= 3){
-        return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`);
+        return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
+        .setTimestamp();
     } else{
         return deniedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
-        .setDescription(`Sorry but you meet ${reqsMet}/3 requirements or bypasses.\nCurrent requirements:`);
+        .setDescription(`Sorry but you meet ${reqsMet}/3 requirements or bypasses.\nCurrent requirements:`)
+        .setTimestamp();
     }
 }
 
