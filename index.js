@@ -52,7 +52,21 @@ const helpEmbed = new Discord.MessageEmbed()
             `\`${config.prefix}check <ign>\``,
             `\`${config.prefix}c <ign>\``,
             `Checks if the specified player meets the current guild requirements`
-        ].join('\n')
+        ].join('\n'),
+        inline: true
+    },
+    {
+        name: "Check Weight",
+        value: [
+            `\`${config.prefix}weight <ign>\``,
+            `\`${config.prefix}we <ign>\``,
+            `Gets the specified player's weight`
+        ].join('\n'),
+        inline: true
+    },
+    {
+        name: "",
+        value: ""
     },
     {
         name: "Current requirements",
