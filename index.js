@@ -108,6 +108,13 @@ client.on('message', async message => {
     }
     message.reactions.cache.get('819138970771652609').remove().catch(error => console.error('Failed to remove loading reaction: ', error));
     return message.channel.send(result);
+  } 
+  else if (cmd === 'we' || cmd === 'weight'){
+    if(!args[0]) return message.channel.send('Please provide a user to check.')
+	message.react('819138970771652609');
+    var result = await getWeight(args[0]);
+	message.reactions.cache.get('819138970771652609').remove().catch(error => console.error('Failed to remove loading reaction: ', error));
+	return message.channel.send(result);
   }
   else if (cmd === 'h' || cmd === 'help'){
     message.reply(helpEmbed.setColor(message.guild.me.displayHexColor))
@@ -164,4 +171,14 @@ async function getUUID(ign){
     const result = await response.json();
     const uuid = result.id;
     return uuid.substr(0,8)+"-"+uuid.substr(8,4)+"-"+uuid.substr(12,4)+"-"+uuid.substr(16,4)+"-"+uuid.substr(20);
+}
+
+async function getWeight(ign){
+    const apiData = await getApiData(ign);
+	if (apiData.status != 200) return new Discord.MessageEmbed().setColor('DC143C').setDescription(`API Error: \`${apiData.status}\``);
+	
+	return new Discord.MessageEmbed()
+	.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `https://sky.shiiyu.moe/stats/${ign}`)
+	.setColor('69e0a5')
+	.setDescription(`${ign}'s weights for their **${apiData.data.name}** profile are **${apiData.data.weight} + ${apiData.data.weight_overflow} Overflow (${apiData.data.weight + apiData.data.weight_overflow} Total)**`)
 }
