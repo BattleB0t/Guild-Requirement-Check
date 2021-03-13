@@ -113,7 +113,7 @@ client.on('message', async message => {
     if(!args[0]) return message.channel.send('Please provide a user to check.')
 	message.react('819138970771652609');
     var result = await getWeight(args[0]);
-	message.reactions.cache.get('819138970771652609').remove().catch(error => console.error('Failed to remove loading reaction: ', error));
+	message.reactions.cache.get('819138970771652609').remove().catch(error => console.error('Failed to remove loading reaction: ', error))
 	return message.channel.send(result);
   }
   else if (cmd === 'h' || cmd === 'help'){
@@ -124,21 +124,21 @@ client.on('message', async message => {
 client.login(config.token);
 
 async function rankTest(ign){
-    const apidata = await getApiData(ign);
+    const apiData = await getApiData(ign);
 
-    if(apidata.data.skills.apiEnabled === false){
+    if(apiData.data.skills.apiEnabled === false){
         return apiOffEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
         .setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`)
         .setTimestamp();
     }
 
     var reqsMet = 0;
-    if(apidata.data.slayers.total_experience >= config.requirements.slayer) reqsMet++;
-    if(apidata.data.skills.average_skills >= config.requirements.skills) reqsMet++;
-    if(apidata.data.dungeons.types.catacombs.level >= config.requirements.catacombs) reqsMet++;
-    if(apidata.data.slayers.total_experience >= config.requirements.bypasses.slayer) reqsMet++;
-    if(apidata.data.skills.average_skills >= config.requirements.bypasses.skills) reqsMet++;
-    if(apidata.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs) reqsMet++;
+    if(apiData.data.slayers.total_experience >= config.requirements.slayer) reqsMet++;
+    if(apiData.data.skills.average_skills >= config.requirements.skills) reqsMet++;
+    if(apiData.data.dungeons.types.catacombs.level >= config.requirements.catacombs) reqsMet++;
+    if(apiData.data.slayers.total_experience >= config.requirements.bypasses.slayer) reqsMet++;
+    if(apiData.data.skills.average_skills >= config.requirements.bypasses.skills) reqsMet++;
+    if(apiData.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs) reqsMet++;
 
     if(reqsMet >= 3){
         return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
@@ -149,9 +149,9 @@ async function rankTest(ign){
         .setDescription([`Sorry but you meet ${reqsMet}/3 requirements or bypasses.`,
         ``,
         `**Your stats:**`,
-        `Slayer: ${apidata.data.slayers.total_experience.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
-        `Skills: ${apidata.data.skills.average_skills.toString().substr(0, 4)}`,
-        `Catacombs: ${apidata.data.dungeons.types.catacombs.level.toString().substr(0, 4)}`
+        `Slayer: ${apiData.data.slayers.total_experience.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
+        `Skills: ${apiData.data.skills.average_skills.toString().substr(0, 4)}`,
+        `Catacombs: ${apiData.data.dungeons.types.catacombs.level.toString().substr(0, 4)}`
         ].join('\n'))
         .setTimestamp();
         return denial;
@@ -175,10 +175,46 @@ async function getUUID(ign){
 
 async function getWeight(ign){
     const apiData = await getApiData(ign);
-	if (apiData.status != 200) return new Discord.MessageEmbed().setColor('DC143C').setDescription(`API Error: \`${apiData.status}\``);
-	
+	if (apiData.status != 200) return new Discord.MessageEmbed().setColor('DC143C').setDescription(`API Error: \`${apiData.status}\``); 
+
 	return new Discord.MessageEmbed()
 	.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `https://sky.shiiyu.moe/stats/${ign}`)
 	.setColor('69e0a5')
-	.setDescription(`${ign}'s weights for their **${apiData.data.name}** profile are **${apiData.data.weight} + ${apiData.data.weight_overflow} Overflow (${apiData.data.weight + apiData.data.weight_overflow} Total)**`)
+	.setDescription(`${ign}'s weights for their **${apiData.data.name}** profile are **${roundNumber(apiData.data.weight)} + ${roundNumber(apiData.data.weight_overflow)} Overflow (${roundNumber(apiData.data.weight) + roundNumber(apiData.data.weight_overflow)} Total)**`)
+    .addFields(
+        {
+            name: `Skills Weight: ${roundNumber(apiData.data.skills.weight)} + ${roundNumber(apiData.data.skills.weight_overflow)} Overflow (${roundNumber(apiData.data.skills.weight) + roundNumber(apiData.data.skills.weight_overflow)} Total)`,
+            value: '```ruby\n' + [
+                `Mining     > Lvl: ${roundNumber(apiData.data.skills.mining.level)}     Weight: ${roundNumber(apiData.data.skills.mining.weight)}`,
+                `Enchanting > Lvl: ${roundNumber(apiData.data.skills.enchanting.level)} Weight: ${roundNumber(apiData.data.skills.enchanting.weight)}`,
+                `Farming    > Lvl: ${roundNumber(apiData.data.skills.farming.level)}    Weight: ${roundNumber(apiData.data.skills.farming.weight)}`,
+                `Combat     > Lvl: ${roundNumber(apiData.data.skills.combat.level)}     Weight: ${roundNumber(apiData.data.skills.combat.weight)}`,
+                `Fishing    > Lvl: ${roundNumber(apiData.data.skills.fishing.level)}    Weight: ${roundNumber(apiData.data.skills.fishing.weight)}`,
+                `Alchemy    > Lvl: ${roundNumber(apiData.data.skills.alchemy.level)}    Weight: ${roundNumber(apiData.data.skills.alchemy.weight)}`,
+                `Taming     > Lvl: ${roundNumber(apiData.data.skills.taming.level)}     Weight: ${roundNumber(apiData.data.skills.taming.weight)}`
+            ].join('\n') + '\n```'
+        },
+        {
+            name: `Slayer Weight: ${roundNumber(apiData.data.slayers.weight)} + ${roundNumber(apiData.data.slayers.weight_overflow)} Overflow (${roundNumber(apiData.data.slayers.weight) + roundNumber(apiData.data.slayers.weight_overflow)} Total)`,
+            value: '```ruby\n' + [
+                `Revenant   > Exp: ${roundNumber(apiData.data.slayers.bosses.revenant.experience)}      Weight: ${roundNumber(apiData.data.slayers.bosses.revenant.weight)}`,
+                `Tarantula  > Exp: ${roundNumber(apiData.data.slayers.bosses.tarantula.experience)}     Weight: ${roundNumber(apiData.data.slayers.bosses.tarantula.weight)}`,
+                `Sven       > Exp: ${roundNumber(apiData.data.slayers.bosses.sven.experience)}          Weight: ${roundNumber(apiData.data.slayers.bosses.sven.weight)}`
+            ].join('\n') + '\n```'
+        },
+        {
+            name: `Dungeon Weight: ${roundNumber(apiData.data.dungeons.weight)} + ${roundNumber(apiData.data.dungeons.weight_overflow)} Overflow (${roundNumber(apiData.data.dungeons.weight) + roundNumber(apiData.data.dungeons.weight_overflow)} Total)`,
+            value: '```ruby\n' + [
+                `Catabombs  > Lvl: ${roundNumber(apiData.data.dungeons.types.catacombs.level)}          Weight: ${roundNumber(apiData.data.dungeons.types.catacombs.weight)}`,
+                `Healer     > Lvl: ${roundNumber(apiData.data.dungeons.classes.healer.level)}           Weight: ${roundNumber(apiData.data.dungeons.classes.healer.weight)}`,
+                `Mage       > Lvl: ${roundNumber(apiData.data.dungeons.classes.mage.level)}             Weight: ${roundNumber(apiData.data.dungeons.classes.mage.weight)}`,
+                `Berserker  > Lvl: ${roundNumber(apiData.data.dungeons.classes.berserker.level)}        Weight: ${roundNumber(apiData.data.dungeons.classes.berserker.weight)}`,
+                `Tank       > Lvl: ${roundNumber(apiData.data.dungeons.classes.tank.level)}             Weight: ${roundNumber(apiData.data.dungeons.classes.tank.weight)}`
+            ].join('\n') + '\n```'
+        }
+    )
+}
+
+function roundNumber(number){
+    return Math.round((number + Number.EPSILON) * 100) / 100
 }
