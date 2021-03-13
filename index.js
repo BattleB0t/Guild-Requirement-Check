@@ -172,6 +172,7 @@ async function getWeight(ign){
                 `Healer     > Lvl: ${roundNumber(apiData.data.dungeons.classes.healer.level)}           Weight: ${roundNumber(apiData.data.dungeons.classes.healer.weight)}`,
                 `Mage       > Lvl: ${roundNumber(apiData.data.dungeons.classes.mage.level)}             Weight: ${roundNumber(apiData.data.dungeons.classes.mage.weight)}`,
                 `Berserker  > Lvl: ${roundNumber(apiData.data.dungeons.classes.berserker.level)}        Weight: ${roundNumber(apiData.data.dungeons.classes.berserker.weight)}`,
+                `Archer     > Lvl: ${roundNumber(apiData.data.dungeons.classes.archer.level)}           Weight: ${roundNumber(apiData.data.dungeons.classes.archer.weight)}`,
                 `Tank       > Lvl: ${roundNumber(apiData.data.dungeons.classes.tank.level)}             Weight: ${roundNumber(apiData.data.dungeons.classes.tank.weight)}`
             ].join('\n') + '\n```'
         }
