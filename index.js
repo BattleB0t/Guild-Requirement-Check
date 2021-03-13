@@ -20,28 +20,7 @@ const acceptedEmbed = new Discord.MessageEmbed()
 const deniedEmbed = new Discord.MessageEmbed()
     .setTitle(`Denied.`)
     .setColor(`DC143C`)
-    .addFields(
-        {
-            name: "Current Requirements",
-            value: [
-                `Slayer: ${config.requirements.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
-                `Skills: ${config.requirements.skills}`,
-                `Catacombs: ${config.requirements.catacombs}`
-            ].join('\n'),
-            inline: true
-        },
-        {
-            name: "Bypasses",
-            value: [
-                `Slayer: ${config.requirements.bypasses.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
-                `Skills: ${config.requirements.bypasses.skills}`,
-                `Catacombs: ${config.requirements.bypasses.catacombs}`
-            ].join('\n'),
-            inline: true
-        }
-    )
-.setFooter(`If you think this is wrong we'll check manually for you`)
-.setTimestamp();
+    .setFooter(`If you think this is wrong we'll check manually for you`)
 
 const helpEmbed = new Discord.MessageEmbed()
 .setTitle('Help')
@@ -65,26 +44,8 @@ const helpEmbed = new Discord.MessageEmbed()
         inline: true
     },
     {
-        name: "You can access SkyCrypt by clicking the name at the top of any messages!",
-        value: "bottom text"
-    },
-    {
         name: "Current requirements",
-        value: [
-            `Slayer: ${config.requirements.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
-            `Skills: ${config.requirements.skills}`,
-            `Catacombs: ${config.requirements.catacombs}`
-        ].join('\n'),
-        inline: true
-    },
-    {
-        name: "Bypasses",
-        value: [
-            `Slayer: ${config.requirements.bypasses.slayer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
-            `Skills: ${config.requirements.bypasses.skills}`,
-            `Catacombs: ${config.requirements.bypasses.catacombs}`
-        ].join('\n'),
-        inline: true
+        value: `Player weight: \`2750\``
     }
 )
 .setFooter('Made by neyoa ❤');
@@ -140,33 +101,21 @@ client.login(config.token);
 async function rankTest(ign){
     const apiData = await getApiData(ign);
 
-    if(apiData.data.skills.apiEnabled === false){
-        return apiOffEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
-        .setDescription(`\`${ign}\` doesn't have skills api enabled. Please enable it then try again`)
-        .setTimestamp();
-    }
+    var totalWeight = roundNumber(apiData.data.weight) + roundNumber(apiData.data.weight_overflow);
 
-    var reqsMet = 0;
-    if(apiData.data.slayers.total_experience >= config.requirements.slayer) reqsMet++;
-    if(apiData.data.skills.average_skills >= config.requirements.skills) reqsMet++;
-    if(apiData.data.dungeons.types.catacombs.level >= config.requirements.catacombs) reqsMet++;
-    if(apiData.data.slayers.total_experience >= config.requirements.bypasses.slayer) reqsMet++;
-    if(apiData.data.skills.average_skills >= config.requirements.bypasses.skills) reqsMet++;
-    if(apiData.data.dungeons.types.catacombs.level >= config.requirements.bypasses.catacombs) reqsMet++;
-
-    if(reqsMet >= 3){
+    if(apiData.data.weight + apiData.data.weight_overflow >= config.requirements.weight){
         return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
         .setTimestamp();
     } else{
         let denial = deniedEmbed;
         denial.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
-        .setDescription([`Sorry but you meet ${reqsMet}/3 requirements or bypasses.`,
-        ``,
-        `**Your stats:**`,
-        `Slayer: ${apiData.data.slayers.total_experience.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
-        `Skills: ${apiData.data.skills.average_skills.toString().substr(0, 4)}`,
-        `Catacombs: ${apiData.data.dungeons.types.catacombs.level.toString().substr(0, 4)}`
-        ].join('\n'))
+        .setDescription(`Sorry but you don't currently have ${config.requirements.weight} weight.`)
+        .addFields(
+            {
+                name: "Your weight:",
+                value: totalWeight
+            }
+        )
         .setTimestamp();
         return denial;
     }
@@ -223,6 +172,7 @@ async function getWeight(ign){
                 `Healer     > Lvl: ${roundNumber(apiData.data.dungeons.classes.healer.level)}           Weight: ${roundNumber(apiData.data.dungeons.classes.healer.weight)}`,
                 `Mage       > Lvl: ${roundNumber(apiData.data.dungeons.classes.mage.level)}             Weight: ${roundNumber(apiData.data.dungeons.classes.mage.weight)}`,
                 `Berserker  > Lvl: ${roundNumber(apiData.data.dungeons.classes.berserker.level)}        Weight: ${roundNumber(apiData.data.dungeons.classes.berserker.weight)}`,
+                `Archer     > Lvl: ${roundNumber(apiData.data.dungeons.classes.archer.level)}           Weight: ${roundNumber(apiData.data.dungeons.classes.archer.weight)}`,
                 `Tank       > Lvl: ${roundNumber(apiData.data.dungeons.classes.tank.level)}             Weight: ${roundNumber(apiData.data.dungeons.classes.tank.weight)}`
             ].join('\n') + '\n```'
         }
