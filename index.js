@@ -65,8 +65,8 @@ const helpEmbed = new Discord.MessageEmbed()
         inline: true
     },
     {
-        name: "",
-        value: ""
+        name: "You can access SkyCrypt by clicking the name at the top of any messages!",
+        value: "bottom text"
     },
     {
         name: "Current requirements",
