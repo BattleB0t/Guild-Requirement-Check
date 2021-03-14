@@ -86,7 +86,7 @@ async function rankTest(ign){
 
     var totalWeight = roundNumber(apiData.data.weight) + roundNumber(apiData.data.weight_overflow);
 
-    if(apiData.data.weight + apiData.data.weight_overflow >= config.requirements.weight){
+    if(totalWeight >= config.requirements.weight){
         return new Discord.MessageEmbed()
         .setTitle(`Accepted!`)
         .setColor(`32CD32`)
