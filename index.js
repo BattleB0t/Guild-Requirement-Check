@@ -5,23 +5,6 @@ const config = require('./config.json');
 
 const client = new Discord.Client();
 
-const acceptedEmbed = new Discord.MessageEmbed()
-    .setTitle(`Accepted!`)
-    .setColor(`32CD32`)
-    .setDescription([
-        `You meet the requirements to join the guild!`,
-        `Before we invite you please make sure you:`,
-        `- Aren't currently in a guild`,
-        `- Have guild invites privacy settings on low`,
-        `- Are able to accept the invite`
-    ].join('\n'))
-    .setFooter(`Made by neyoa ❤`);
-
-const deniedEmbed = new Discord.MessageEmbed()
-    .setTitle(`Denied.`)
-    .setColor(`DC143C`)
-    .setFooter(`If you think this is wrong we'll check manually for you`)
-
 const helpEmbed = new Discord.MessageEmbed()
 .setTitle('Help')
 .addFields(
@@ -104,11 +87,25 @@ async function rankTest(ign){
     var totalWeight = roundNumber(apiData.data.weight) + roundNumber(apiData.data.weight_overflow);
 
     if(apiData.data.weight + apiData.data.weight_overflow >= config.requirements.weight){
-        return acceptedEmbed.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
+        return new Discord.MessageEmbed()
+        .setTitle(`Accepted!`)
+        .setColor(`32CD32`)
+        .setDescription([
+            `You meet the requirements to join the guild!`,
+            `Before we invite you please make sure you:`,
+            `- Aren't currently in a guild`,
+            `- Have guild invites privacy settings on low`,
+            `- Are able to accept the invite`
+        ].join('\n'))
+        .setFooter(`Made by neyoa ❤`) 
+        .setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
         .setTimestamp();
     } else{
-        let denial = deniedEmbed;
-        denial.setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
+        return new Discord.MessageEmbed()
+        .setTitle(`Denied.`)
+        .setColor(`DC143C`)
+        .setFooter(`If you think this is wrong we'll check manually for you`)
+        .setAuthor(ign, `https://cravatar.eu/helmavatar/${ign}/600.png`, `http://sky.shiiyu.moe/stats/${ign}`)
         .setDescription(`Sorry but you don't currently have ${config.requirements.weight} weight.`)
         .addFields(
             {
@@ -117,7 +114,6 @@ async function rankTest(ign){
             }
         )
         .setTimestamp();
-        return denial;
     }
 }
 
